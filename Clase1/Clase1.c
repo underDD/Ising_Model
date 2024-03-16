@@ -13,7 +13,8 @@ int main(){
     genconfig(S,p);
     offsets(xp,yp,xm,ym);
     saveconfig(S);
-    printf("La energia del sistema es: %lf\n", energia(xp,yp,S));
+    printf("La energia de la configuracion es: %lf\n", energia(xp,yp,S));
+    printf("La magnetizacion de la configuracion es: %lf\n", magneto(S));
 
+    return 0;
 
-}
