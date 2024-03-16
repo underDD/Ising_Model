@@ -17,16 +17,16 @@ double parisirapuano(void)
     ind_ran=ig1=ig2=ig3=0;
 
     for(i=0;i<256;i++)
-        irr[i]=(rand()<<16)+rand();
+        irr[i] = (rand()<<16) + rand();
 
-    ig1=ind_ran-24;
-    ig2=ind_ran-55;
-    ig3=ind_ran-61;
-    irr[ind_ran]=irr[ig1]+irr[ig2];
-    ir1=(irr[ind_ran]^irr[ig3]);
+    ig1 = ind_ran-24;
+    ig2 = ind_ran-55;
+    ig3 = ind_ran-61;
+    irr[ind_ran] = irr[ig1] + irr[ig2];
+    ir1 = (irr[ind_ran] ^ irr[ig3]);
     ind_ran++;
 
-    return ir1*NormRAnu;
+    return ir1 * NormRAnu;
 
 }
 
@@ -41,7 +41,7 @@ int spinrandom(void)
 
     double omega;
 
-    omega=parisirapuano();
+    omega = parisirapuano();
 
     if (omega>0.5) return -1;
 
@@ -62,44 +62,73 @@ int spinrandom(void)
 void genconfig(int *config, Parameters p)
 {
 
-    int i;
+    int i,j;
     int flag;
     double omega;
+    FILE *f;
 
-    flag=p.flag; 
-    printf("%d",flag);
+    flag = p.flag;
 
     switch(flag)
     {
 
-    case 0:
+    case 0: // Random
+
+        printf("\nflag = %d --> Configuracion random\n\n",flag);
 
         for(i=0;i<V;i++)
         {
-            config[i]=spinrandom();
+            config[i] = spinrandom();
         }
-        break;
+        break; // Ferromagnetica
 
     case 1:
 
-        omega=parisirapuano();
+        printf("\nflag = %d --> Configuracion ferromagnetica\n\n",flag);
+
+        omega = parisirapuano();
 
         for(i=0;i<V;i++)
         {
-            if (omega > 0.5) config[i]=1;
-            if (omega < 0.5) config[i]=-1;
+            if (omega > 0.5) config[i] = 1;
+            if (omega < 0.5) config[i] = -1;
         }
         break;
 
-    case 2:
+    case 2: // Antiferromagnetica
+
+        printf("\nflag = %d --> Configuracion antiferromagnetica\n\n",flag);
+
+        for(i=0;i<L;i++)
+        {
+            if (i%2==0) config[i] = 1;
+            else
+                config[i] = -1;
+        }
+
+        for(i=L;i<V;i++)
+        {
+            config[i] = -config[i-L];
+        }
+
+        break;
+
+    case 3: // Leer de un fichero la configuracion
+
+        printf("\nflag = %d --> Configuracion leida de fichero\n\n",flag);
+
+        f=fopen("savedconfig.txt","rt");
+
+        if (f == NULL) {printf("ERROR leyendo la configuración.\n"); exit(1);}
 
         for(i=0;i<V;i++)
         {
-            if (i%2==0) config[i]=1;
-            if ((i+2)%(L+1)==0) config[i]=config[i-1];
-            else
-                config[i]=-1;
+
+            fscanf(f,"%d",&config[i]);
+
         }
+
+        fclose(f);
 
         break;
 
@@ -148,7 +177,7 @@ float energia(int *xp,int *yp,int *S){
 
     for(i=0;i<L;i++){
         for(j=0;j<L;j++){
-            E+=S[n]*(S[n+xp[j]]+S[n+yp[i]]);
+            E+= S[n] * (S[n+xp[j]] + S[n+yp[i]]);
             n++;
         }
     }
@@ -163,9 +192,11 @@ float energia(int *xp,int *yp,int *S){
 */
 float magneto(int *S){
 
-    int M=0;
+    int M;
     int i;
     int LL=V;
+
+    M=0;
 
     for(i=0;i<V;i++){
         M+=S[i];
@@ -181,7 +212,7 @@ float magneto(int *S){
     Guarda la configuración en un fichero
 
 */
-void saveconfig(int *config)
+void saveconfig(int *config) // La guardo alreves que en teoría, es decir, la posición 0 corresponde a la esquina superior izq, por comodidad.
 {
 
     int i;
@@ -215,5 +246,3 @@ void calculos(float *estm,float *e,float *esq, float *msq,int *S,int *xp,int *yp
     *msq=*estm* *estm;
 
 }
-
- 
