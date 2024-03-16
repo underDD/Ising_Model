@@ -48,8 +48,7 @@ int main(){
     printf("La energia de la configuracion es: %lf\n", energia(xp,yp,S));
     printf("La magnetizacion de la configuracion es: %lf\n", magneto(S));
 
-
-
+    return 0;
 
 }
 
@@ -58,7 +57,7 @@ int main(){
 /*
 
     Generadir aleatorio de Parisi-Rapuano
-    Devuelve un n鷐ero aleatorio entre 0 y 1
+    Devuelve un n煤mero aleatorio entre 0 y 1
 
 */
 double parisirapuano(void)
@@ -106,12 +105,12 @@ int spinrandom(void)
 
 /*
 
-    Genera una configuraciones en funci髇 de un valor 'flag' :
+    Genera una configuraciones en funci贸n de un valor 'flag' :
 
         - flag=0 --> random
         - flag=1 --> congelada 1 o -1
         - flag=2 --> ajedrez
-        - flag=3 --> carga una configuraci髇 de un fichero
+        - flag=3 --> carga una configuraci贸n de un fichero
 
 */
 void genconfig(int *config, Parameters p)
@@ -174,7 +173,7 @@ void genconfig(int *config, Parameters p)
 
         f=fopen("savedconfig.txt","rt");
 
-        if (f == NULL) {printf("ERROR leyendo la configuraci髇.\n"); exit(1);}
+        if (f == NULL) {printf("ERROR leyendo la configuraci贸n.\n"); exit(1);}
 
         for(i=0;i<V;i++)
         {
@@ -264,10 +263,10 @@ float magneto(int *S){
 
 /*
 
-    Guarda la configuraci髇 en un fichero
+    Guarda la configuraci贸n en un fichero
 
 */
-void saveconfig(int *config) // La guardo alreves que en teor韆, es decir, la posici髇 0 corresponde a la esquina superior izq, por comodidad.
+void saveconfig(int *config) // La guardo alreves que en teor铆a, es decir, la posici贸n 0 corresponde a la esquina superior izq, por comodidad.
 {
 
     int i;
@@ -306,7 +305,7 @@ void calculos(float *estm,float *e,float *esq, float *msq,int *S,int *xp,int *yp
 
 /*
 
-    Lee de un fichero "flag" los datos necesarios para la simulaci髇
+    Lee de un fichero "flag" los datos necesarios para la simulaci贸n
 
 */
 int loadParameters(Parameters *parameters) {
@@ -317,7 +316,7 @@ int loadParameters(Parameters *parameters) {
 
     if (fin==NULL)  return -1;
 
-    while (!feof(fin)) { // Recorre cada l韓ea hasta el final del fichero.
+    while (!feof(fin)) { // Recorre cada l铆nea hasta el final del fichero.
 
         fgets(line,sizeof(line),fin); // Guarda la linea en line
         char *token = strtok(line," "); // El puntero token se posiciona donde aparece el primer espacio
