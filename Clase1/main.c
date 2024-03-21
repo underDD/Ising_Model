@@ -18,4 +18,5 @@ int main(){
     printf("La magnetizacion de la configuracion es: %lf\n", magneto(S));
 
     return 0;
-
+    
+}
