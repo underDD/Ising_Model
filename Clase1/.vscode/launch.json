@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "name": "Run the main program",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/ising.exe",
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal",
+            "preLaunchTask": "Compile main file"
+        },
+        {
+            "name": "Run the main program especial",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/ising.exe",
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal",
+            "preLaunchTask": "Compile main file especial"
+        }
+    ],
+    "version": "2.0.0"
+}

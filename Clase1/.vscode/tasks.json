@@ -1,0 +1,49 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "Compile main file",
+            "command": "C:\\msys64\\ucrt64\\bin\\gcc.exe",
+            "args": [
+                "-Wall",
+                "algorithmsDATA.c",
+                "algorithmsNET.c",
+                "main.c",
+                "-o",
+                "ising.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": "$gcc",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Compiles all the *.c files in the working directory"
+        },
+        {
+            "type": "shell",
+            "label": "Compile main file especial",
+            "command": "C:\\msys64\\ucrt64\\bin\\gcc.exe",
+            "args": [
+                "-Wall",
+                "algorithmsDATA.c",
+                "algorithmsNET.c",
+                "main.c",
+                "-o",
+                "ising.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": "$gcc",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Compiles all the *.c files in the working directory"
+        }
+    ],
+    "version": "2.0.0"
+}
