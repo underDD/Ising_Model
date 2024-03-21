@@ -1,6 +1,7 @@
 #include "head1.h"
 
 int main(){
+    //skibidi
 
     srand(time(NULL));
 
