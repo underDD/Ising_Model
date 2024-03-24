@@ -1,3 +1,10 @@
+/*
+    ESTO ES UNA MIERDA NO SE PORQUE NO FUNCIONA NO PUEDO MAS
+    EL VISUALSUDIO ES UNA MIERDA TAMBIEN, NO ME FUNCIONA EL JONSON NI NADA
+*/
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
