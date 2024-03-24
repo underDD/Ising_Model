@@ -1,9 +1,7 @@
 #include "head1.h"
 
 /*
-
     Lee de un fichero "flag" los datos necesarios para la simulación
-
 */
 int loadParameters(Parameters *parameters) {
 
@@ -25,17 +23,17 @@ int loadParameters(Parameters *parameters) {
                 //strtok para encontrar el siguiente espacio (final de la frase) tomando asi el valor de la variable en char y se transforma a double con atof
                 parameters->flag=atof(strtok(NULL," "));
 
-            } else if (strcmp(token,"b_0")==0)
+            } else if (strcmp(token,"Beta_0")==0)
             {
 
                 parameters->b_0=atof(strtok(NULL," "));
 
-            } else if (strcmp(token,"b_f")==0)
+            } else if (strcmp(token,"Beta_f")==0)
             {
 
                 parameters->b_f=atof(strtok(NULL," "));
 
-            } else if (strcmp(token,"dB")==0)
+            } else if (strcmp(token,"dBeta")==0)
             {
 
                 parameters->dB=atof(strtok(NULL," "));
@@ -64,45 +62,26 @@ int loadParameters(Parameters *parameters) {
     return 0;
 }
 
-
 /*
-
-    Construye un histograma
-
+    Guarda la configuración en un fichero
 */
-void Histograma(double *I,double *H,double *delta,double *mx,double *mn)
+void saveconfig(int *config) // La guardo alreves que en teoría, es decir, la posición 0 corresponde a la esquina superior izq, por comodidad.
 {
 
-    int i,j;
-    double max,min,d,norma;
+    int i;
+    FILE *f;
 
-    max=-100000000;
-    min=+100000000;
+    f=fopen("savedconfig.txt","wt");
 
-    for(i=0;i<N_Inter;i++) H[i]=0;
-
-    for(i=0;i<N_DATA;i++)
+    for(i=0;i<V;i++)
     {
-        if (I[i]>max) max=I[i];
-        if (I[i]<min) min=I[i];
+        fprintf(f, "%d%c", config[i], (i+1)%L==0? '\n':' ');
+
+        //if((i+1)%L==0) fprintf(f,"\n");
+        //fprintf(f,"%d ",config[i]);
+
     }
 
-    d=(max-min)/N_Inter;
-    norma=1.0/(N_DATA*d);
-
-    for(i=0;i<N_DATA;i++)
-    {
-        j=(I[i]-min)/d;
-        if (j==N_Inter) j=j-1;
-        H[j]++;
-        //printf("%d\n",j);
-    }
-
-    for(i=0;i<N_Inter;i++)
-        H[i]*=norma;
-
-    *delta=d;
-    *mx=max;
-    *mn=min;
+    fclose(f);
 
 }
