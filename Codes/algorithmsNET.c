@@ -213,7 +213,7 @@ float magneto(int *S){
     Genera el array de probabilidades
 
 */
-void probabilidad(float *prob,float beta)
+void probabilidad(double *prob,double beta)
 {
 
     prob[0] = exp(-beta*(-8.0));
@@ -230,7 +230,7 @@ void probabilidad(float *prob,float beta)
 
 */
 
-void metropolis(int *s, float *prob){
+void metropolis(int *s, double *prob){
 
     int n,x,y,IND;
     double omega;
@@ -262,3 +262,6 @@ void metropolis(int *s, float *prob){
         }
     }
 }
+
+
+
