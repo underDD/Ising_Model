@@ -1,10 +1,8 @@
 #include "head1.h"
 
 /*
-
-    Generadir aleatorio de Parisi-Rapuano
+    Generador aleatorio de Parisi-Rapuano
     Devuelve un número aleatorio entre 0 y 1
-
 */
 double parisirapuano(void)
 {
@@ -32,9 +30,7 @@ double parisirapuano(void)
 
 
 /*
-
     Devuelve spin 1 o -1 de manera random
-
 */
 int spinrandom(void)
 {
@@ -50,19 +46,17 @@ int spinrandom(void)
 }
 
 /*
-
     Genera una configuraciones en función de un valor 'flag' :
 
         - flag=0 --> random
         - flag=1 --> congelada 1 o -1
         - flag=2 --> ajedrez
         - flag=3 --> carga una configuración de un fichero
-
 */
 void genconfig(int *config, Parameters p)
 {
 
-    int i,j;
+    int i;
     int flag;
     double omega;
     FILE *f;
@@ -140,14 +134,22 @@ void genconfig(int *config, Parameters p)
 }
 
 
+
+
 /*
-
     Construye los offsets necesarios para movernos por la red
-
 */
 void offsets(int *xp,int *yp,int *xm,int *ym){
 
     int i;
+
+    for(i=0;i<L;i++)
+    {
+        xp[i]=0;
+        yp[i]=0;
+        xm[i]=0;
+        ym[i]=0;
+    }
 
     for(i=0;i<L;i++){
         xp[i]=1;
@@ -163,21 +165,19 @@ void offsets(int *xp,int *yp,int *xm,int *ym){
 }
 
 /*
-
-    Calcula la energia extensiva de una configuracion
-
+    Calcula la energia intensiva de una configuracion
 */
-float energia(int *xp,int *yp,int *S){
+float energia(int *S){
 
-    double E;
-    int n,i,j;
+    float E;
+    int n,x,y;
 
     E=0;
     n=0;
 
-    for(i=0;i<L;i++){
-        for(j=0;j<L;j++){
-            E+= S[n] * (S[n+xp[j]] + S[n+yp[i]]);
+    for(y=0;y<L;y++){
+        for(x=0;x<L;x++){
+            E+=S[n]*(S[n+xp[x]]+S[n+yp[y]]);
             n++;
         }
     }
@@ -187,14 +187,13 @@ float energia(int *xp,int *yp,int *S){
 
 /*
 
-    Calcula la magnetizacion extensiva de una configuracion
+    Calcula la magnetizacion intensiva de una configuracion
 
 */
 float magneto(int *S){
 
     int M;
     int i;
-    int LL=V;
 
     M=0;
 
@@ -204,45 +203,62 @@ float magneto(int *S){
 
     //if(M<0) M=-M;
 
-    return M/(double)LL;
+    return M/(float)V;
 }
+
+
 
 /*
 
-    Guarda la configuración en un fichero
+    Genera el array de probabilidades
 
 */
-void saveconfig(int *config) // La guardo alreves que en teoría, es decir, la posición 0 corresponde a la esquina superior izq, por comodidad.
+void probabilidad(float *prob,float beta)
 {
 
-    int i;
-    FILE *f;
-
-    f=fopen("savedconfig.txt","wt");
-
-    for(i=0;i<V;i++)
-    {
-        fprintf(f, "%d%c", config[i], (i+1)%L==0? '\n':' ');
-
-        //if((i+1)%L==0) fprintf(f,"\n");
-        //fprintf(f,"%d ",config[i]);
-
-    }
-
-    fclose(f);
+    prob[0] = exp(-beta*(-8.0));
+    prob[1] = exp(-beta*(-4.0));
+    prob[2] = exp(-beta*(0.0));
+    prob[3] = exp(-beta*(4.0));
+    prob[4] = exp(-beta*(8.0));
 
 }
 
 /*
 
-    Realiza todos los calculos necesarios
+    Aplica metropolis pasando por toda la red, realiza un paso de Montacalo
 
 */
-void calculos(float *estm,float *e,float *esq, float *msq,int *S,int *xp,int *yp){
 
-    *estm=(magneto(S));      // Sin valor absoluto
-    *e=energia(xp,yp,S);
-    *esq=*e* *e;
-    *msq=*estm* *estm;
+void metropolis(int *s, float *prob){
 
+    int n,x,y,IND;
+    double omega;
+
+    n=0;
+    IND=0;
+    Ntot=Nacep=0;
+
+    for(y=0;y<L;y++)
+    {
+        for(x=0;x<L;x++)
+        {
+            IND = 2+s[n]*(s[n+xp[x]]+s[n+yp[y]]+s[n+xm[x]]+s[n+ym[y]])/2;
+            omega=parisirapuano();
+
+            if (prob[IND] > omega)
+            {
+                //printf("%lf \t %d\n", omega, IND);
+                s[n] = -s[n];
+                #ifdef ACEPTANCIA
+                    Nacep++;
+                #endif
+            }
+
+            #ifdef ACEPTANCIA
+                Ntot++;
+            #endif
+            n++;
+        }
+    }
 }
