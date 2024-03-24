@@ -1,4 +1,4 @@
-flag 3
+flag 0
 Beta_0 0.01
 Beta_f 1.40
 dBEta 0.001
