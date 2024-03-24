@@ -4,61 +4,117 @@
 #include <math.h>
 #include <time.h>
 
-#define L 10
+#define L (int)128
 #define V L*L
 #define N_DATA 10000
 #define N_Inter 100
 #define fran rand()/((double)RAND_MAX+1)
 #define NormRAnu (2.3283063671E-10F)
+//#define ACEPTANCIA
 
 typedef struct Parameters {
     int flag;
-    double b_0;
-    double b_f;
-    double dB;
+    float b_0;
+    float b_f;
+    float dB;
     int Nterm;
     int Nmed;
     int Nmc;
 } Parameters;
 
+int xp[L],yp[L],xm[L],ym[L];
+int Ntot, Nacep;
+
+// alogrithmsDATA.c : Algoritmos para tratar los datos
+
 int loadParameters(Parameters *parameters);
-void genconfig(int *config, Parameters p);
-int spinrandom(void);
-double parisirapuano(void);
-void offsets(int *xp,int *yp,int *xm,int *ym);
-void calculos(float *estm,float *e,float *esq, float *msq,int *S,int *xp,int *yp);
-float energia(int *xp,int *yp,int *S);
-float magneto(int *S);
 void saveconfig(int *config);
 void Histograma(double *I,double *H,double *delta,double *mx,double *mn);
+
+// algorithmsNET.C : algoritmos para tratar la red
+
+double parisirapuano(void);
+void genconfig(int *config, Parameters p);
+int spinrandom(void);
+void offsets(int *xp,int *yp,int *xm,int *ym);
+float energia(int *S);
+float magneto(int *S);
+void probabilidad(double *prob, double beta);
+void metropolis(int *s, double *prob);
+
 
 int main(){
 
     srand(time(NULL));
 
     int S[V];
-    int xp[L],yp[L],xm[L],ym[L];
-    //double H[N_DATA];
+    // int stepsBeta, pasoBeta;
+    int pasoTerm;
+    int pasoMed;
+    int pasoMC;
+    int hyst;
+
+    FILE *fout;
+
+    float beta;
+    double *prob;
+    prob = (double*)calloc(5, sizeof(double));
+
     Parameters p;
 
+    char name[20];
+
     loadParameters(&p);
+    printf("Beta inicial --> %f\n",p.b_0);
+    printf("Beta final --> %f\n",p.b_f);
+    printf("Paso beta --> %f\n",p.dB);
+    printf("Pasos Montecarlo -->  %d\n",p.Nmc);
+    printf("Numero medidas --> %d\n",p.Nmed);
+    printf("Pasos termalización --> %d\n",p.Nterm);
+
+    beta = 0.5;
+    hyst = 0;
+    // stepsBeta = (int)((p.b_f-p.b_0)/p.dB); // Calcula cuántos pasos hay que hacer para recorrer todo el paso de betas
+
     genconfig(S,p);
     offsets(xp,yp,xm,ym);
-    saveconfig(S);
-    printf("La energia de la configuracion es: %lf\n", energia(xp,yp,S));
-    printf("La magnetizacion de la configuracion es: %lf\n", magneto(S));
 
+    //for(hyst=0;hyst<2;hyst++) 
+        // for(pasoBeta=0;pasoBeta<stepsBeta;pasoBeta++)
+        
+            probabilidad(prob,beta);
+            sprintf(name,"results/med_%d.txt",hyst);
+            fout = fopen(name,"wt");
+            for(pasoTerm=0;pasoTerm<p.Nterm;pasoTerm++)
+            {
+                metropolis(S,prob);
+            }
+
+            for(pasoMed=0;pasoMed<p.Nmed;pasoMed++)
+            {
+                for(pasoMC=0;pasoMC<p.Nmc;pasoMC++)
+                    metropolis(S,prob);
+                
+                fprintf(fout,"%lf\t%lf\n",energia(S), magneto(S));
+            }
+
+            fclose(fout);
+       
+    
+
+
+    
+    free(prob);
     return 0;
-
+    
 }
 
 
 
+
 /*
-
-    Generadir aleatorio de Parisi-Rapuano
+    Generador aleatorio de Parisi-Rapuano
     Devuelve un número aleatorio entre 0 y 1
-
 */
 double parisirapuano(void)
 {
@@ -86,9 +142,7 @@ double parisirapuano(void)
 
 
 /*
-
     Devuelve spin 1 o -1 de manera random
-
 */
 int spinrandom(void)
 {
@@ -104,19 +158,17 @@ int spinrandom(void)
 }
 
 /*
-
     Genera una configuraciones en función de un valor 'flag' :
 
         - flag=0 --> random
         - flag=1 --> congelada 1 o -1
         - flag=2 --> ajedrez
         - flag=3 --> carga una configuración de un fichero
-
 */
 void genconfig(int *config, Parameters p)
 {
 
-    int i,j;
+    int i;
     int flag;
     double omega;
     FILE *f;
@@ -194,10 +246,10 @@ void genconfig(int *config, Parameters p)
 }
 
 
+
+
 /*
-
     Construye los offsets necesarios para movernos por la red
-
 */
 void offsets(int *xp,int *yp,int *xm,int *ym){
 
@@ -217,11 +269,9 @@ void offsets(int *xp,int *yp,int *xm,int *ym){
 }
 
 /*
-
-    Calcula la energia extensiva de una configuracion
-
+    Calcula la energia intensiva de una configuracion
 */
-float energia(int *xp,int *yp,int *S){
+float energia(int *S){
 
     double E;
     int n,i,j;
@@ -241,7 +291,7 @@ float energia(int *xp,int *yp,int *S){
 
 /*
 
-    Calcula la magnetizacion extensiva de una configuracion
+    Calcula la magnetizacion intensiva de una configuracion
 
 */
 float magneto(int *S){
@@ -261,52 +311,45 @@ float magneto(int *S){
     return M/(double)LL;
 }
 
-/*
 
-    Guarda la configuración en un fichero
-
-*/
-void saveconfig(int *config) // La guardo alreves que en teoría, es decir, la posición 0 corresponde a la esquina superior izq, por comodidad.
+void probabilidad(double *prob,double beta)
 {
-
-    int i;
-    FILE *f;
-
-    f=fopen("savedconfig.txt","wt");
-
-    for(i=0;i<V;i++)
-    {
-        fprintf(f, "%d%c", config[i], (i+1)%L==0? '\n':' ');
-
-        //if((i+1)%L==0) fprintf(f,"\n");
-        //fprintf(f,"%d ",config[i]);
-
-    }
-
-    fclose(f);
+    prob[0]=exp(8.0*beta);
+    prob[1]=exp(4.0*beta);
+    prob[2]=exp(0.0*beta);
+    prob[3]=exp(-4.0*beta);
+    prob[4]=exp(-8.0*beta);
 
 }
 
-/*
+void metropolis(int *s, double *prob){
 
-    Realiza todos los calculos necesarios
+    int n,x,y,IND;
 
-*/
-void calculos(float *estm,float *e,float *esq, float *msq,int *S,int *xp,int *yp){
+    n=0;
+    IND=0;
+    Ntot=Nacep=0;
 
-    *estm=(magneto(S));      // Sin valor absoluto
-    *e=energia(xp,yp,S);
-    *esq=*e* *e;
-    *msq=*estm* *estm;
-
+    for(y=0;y<L;y++)
+        for(x=0;x<L;x++)
+        {
+            IND = s[n]*(s[n+xp[x]]+s[n+yp[y]]+s[n+xm[x]]+s[n+ym[y]])/2+2;
+            if (parisirapuano() < prob[IND])
+            {
+                s[n] = -s[n];
+                #ifdef ACEPTANCIA
+                    Nacep++;
+                #endif
+            }
+            #ifdef ACEPTANCIA
+                Ntot++;
+            #endif
+            n++;
+        }
 }
 
-
-
 /*
-
     Lee de un fichero "flag" los datos necesarios para la simulación
-
 */
 int loadParameters(Parameters *parameters) {
 
@@ -328,17 +371,17 @@ int loadParameters(Parameters *parameters) {
                 //strtok para encontrar el siguiente espacio (final de la frase) tomando asi el valor de la variable en char y se transforma a double con atof
                 parameters->flag=atof(strtok(NULL," "));
 
-            } else if (strcmp(token,"b_0")==0)
+            } else if (strcmp(token,"Beta_0")==0)
             {
 
                 parameters->b_0=atof(strtok(NULL," "));
 
-            } else if (strcmp(token,"b_f")==0)
+            } else if (strcmp(token,"Beta_f")==0)
             {
 
                 parameters->b_f=atof(strtok(NULL," "));
 
-            } else if (strcmp(token,"dB")==0)
+            } else if (strcmp(token,"dBeta")==0)
             {
 
                 parameters->dB=atof(strtok(NULL," "));
@@ -369,9 +412,7 @@ int loadParameters(Parameters *parameters) {
 
 
 /*
-
     Construye un histograma
-
 */
 void Histograma(double *I,double *H,double *delta,double *mx,double *mn)
 {
@@ -410,3 +451,26 @@ void Histograma(double *I,double *H,double *delta,double *mx,double *mn)
 
 }
 
+/*
+    Guarda la configuración en un fichero
+*/
+void saveconfig(int *config) // La guardo alreves que en teoría, es decir, la posición 0 corresponde a la esquina superior izq, por comodidad.
+{
+
+    int i;
+    FILE *f;
+
+    f=fopen("savedconfig.txt","wt");
+
+    for(i=0;i<V;i++)
+    {
+        fprintf(f, "%d%c", config[i], (i+1)%L==0? '\n':' ');
+
+        //if((i+1)%L==0) fprintf(f,"\n");
+        //fprintf(f,"%d ",config[i]);
+
+    }
+
+    fclose(f);
+
+}
