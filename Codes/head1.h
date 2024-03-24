@@ -40,5 +40,5 @@ int spinrandom(void);
 void offsets(int *xp,int *yp,int *xm,int *ym);
 float energia(int *S);
 float magneto(int *S);
-void probabilidad(float *prob, float beta);
-void metropolis(int *s, float *prob);
+void probabilidad(double *prob, double beta);
+void metropolis(int *s, double *prob);
