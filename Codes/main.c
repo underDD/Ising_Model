@@ -1,5 +1,6 @@
 #include "head1.h"
 
+
 int main(){
 
     srand(time(NULL));
@@ -10,17 +11,15 @@ int main(){
     int pasoMed;
     int pasoMC;
     int hyst;
-    int ele;
-    int xp[L],yp[L],xm[L],ym[L];
 
     FILE *fout;
 
-    double beta;
-    double prob[5];
+    float beta;
+    float prob[5];
 
     Parameters p;
 
-    char name[20];
+    char name[MAX_STR_LEN];
 
     loadParameters(&p);
     printf("Beta inicial --> %f\n",p.b_0);
@@ -34,7 +33,7 @@ int main(){
     stepsBeta = (int)((p.b_f-p.b_0)/p.dB); // Calcula cuántos pasos hay que hacer para recorrer todo el paso de betas
 
     genconfig(S,p);
-    offsets(xp,yp,xm,ym);
+    offsets();
 
     #ifdef TERMALIZACION
 
@@ -44,6 +43,7 @@ int main(){
         fout = fopen(name,"wt");
         for(pasoTerm=0;pasoTerm < p.Nterm;pasoTerm++)
         {
+
             metropolis(S,prob);
             fprintf(fout,"%d\t%f\t%f\n",pasoTerm, energia(S), magneto(S));
         }
@@ -53,16 +53,16 @@ int main(){
 
     #ifdef SIMULACION
 
-    for(hyst=0;hyst<2;hyst++)
+   // for(hyst=0;hyst<2;hyst++)
         for(pasoBeta=0;pasoBeta<stepsBeta;pasoBeta++)
         {
             probabilidad(prob,beta);
-            sprintf(name,"results/med_%d_%d_%lf.txt",hyst,L,beta);
+            sprintf(name,"results/med_%d_%d_%f.txt",hyst,L,beta);
             fout = fopen(name,"wt");
             for(pasoTerm=0;pasoTerm<p.Nterm;pasoTerm++)
             {
                 metropolis(S,prob);
-                //printf("Paso de termalizacion %d comletado\n",pasoTerm);
+                //printf("Paso de termalizacion %d completado\n",pasoTerm);
             }
 
             for(pasoMed=0;pasoMed<p.Nmed;pasoMed++)
@@ -70,7 +70,7 @@ int main(){
                 for(pasoMC=0;pasoMC<p.Nmc;pasoMC++)
                     metropolis(S,prob);
 
-                 fprintf(fout,"%d\t%lf\t%lf\n",pasoMed, energia(S), magneto(S));
+                 //fprintf(fout,"%d\t%lf\t%lf\n",pasoMed, energia(S), magneto(S));
             }
             fclose(fout);
         }
