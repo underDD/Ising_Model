@@ -9,7 +9,7 @@
             "cwd": "${workspaceFolder}",
             "environment": [],
             "console": "integratedTerminal",
-            "preLaunchTask": "Compile main file"
+            "preLaunchTask": "Compile main file",
         },
         {
             "name": "Run the main program especial",
@@ -21,6 +21,27 @@
             "environment": [],
             "console": "integratedTerminal",
             "preLaunchTask": "Compile main file especial"
+        },
+        {
+            "name": "Build and debug the main file",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/ising.exe",
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Buid main file with debugging activated"
+
         }
     ],
     "version": "2.0.0"
