@@ -28,6 +28,7 @@
             "command": "C:\\msys64\\ucrt64\\bin\\gcc.exe",
             "args": [
                 "-Wall",
+                "-g",
                 "algorithmsDATA.c",
                 "algorithmsNET.c",
                 "main.c",
@@ -43,6 +44,29 @@
                 "isDefault": true
             },
             "detail": "Compiles all the *.c files in the working directory"
+        },
+        {
+            "type": "shell",
+            "label": "Buid main file with debugging activated",
+            "command": "C:\\msys64\\ucrt64\\bin\\gcc.exe",
+            "args": [
+                "-g",
+                "-Wall",
+                "algorithmsDATA.c",
+                "algorithmsNET.c",
+                "main.c",
+                "-o",
+                "ising.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": "$gcc",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Compiles all the *.c files in the working in debugging mode"
         }
     ],
     "version": "2.0.0"
