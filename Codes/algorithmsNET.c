@@ -1,5 +1,8 @@
 #include "head1.h"
 
+int Ntot, Nacep;
+int xp[L],yp[L],xm[L],ym[L];
+
 /*
     Generador aleatorio de Parisi-Rapuano
     Devuelve un número aleatorio entre 0 y 1
@@ -139,17 +142,9 @@ void genconfig(int *config, Parameters p)
 /*
     Construye los offsets necesarios para movernos por la red
 */
-void offsets(int *xp,int *yp,int *xm,int *ym){
+void offsets(){
 
     int i;
-
-    for(i=0;i<L;i++)
-    {
-        xp[i]=0;
-        yp[i]=0;
-        xm[i]=0;
-        ym[i]=0;
-    }
 
     for(i=0;i<L;i++){
         xp[i]=1;
@@ -169,7 +164,7 @@ void offsets(int *xp,int *yp,int *xm,int *ym){
 */
 float energia(int *S){
 
-    float E;
+    int E;
     int n,x,y;
 
     E=0;
@@ -182,7 +177,7 @@ float energia(int *S){
         }
     }
 
-    return -E/(2*V);
+    return -E/(float)(2*V);
 }
 
 /*
@@ -213,7 +208,7 @@ float magneto(int *S){
     Genera el array de probabilidades
 
 */
-void probabilidad(double *prob,double beta)
+void probabilidad(float *prob,float beta)
 {
 
     prob[0] = exp(-beta*(-8.0));
@@ -230,7 +225,7 @@ void probabilidad(double *prob,double beta)
 
 */
 
-void metropolis(int *s, double *prob){
+void metropolis(int *s, float *prob){
 
     int n,x,y,IND;
     double omega;
@@ -262,6 +257,3 @@ void metropolis(int *s, double *prob){
         }
     }
 }
-
-
-
