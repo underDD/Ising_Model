@@ -85,3 +85,118 @@ void saveconfig(int *config) // La guardo alreves que en teoría, es decir, la p
     fclose(f);
 
 }
+
+
+double e2(double e)
+{
+    return e*e;
+}
+
+double m2(double m)
+{
+    return m*m;
+}
+
+
+double mean(double *DATA,int NDATA)
+{
+    int i;
+    double suma;
+
+    suma=0;
+
+    for(i=0;i<NDATA;i++)
+    {
+        suma+=DATA[i];
+    }
+
+    return suma/(double)NDATA;
+
+}
+
+double Var(double *DATA, int NDATA)
+{
+    int i=0;
+    double suma;
+    double media;
+
+    suma=0;
+    media=mean(DATA,NDATA);
+
+    for(i=0;i<NDATA;i++)
+    {
+        suma+=pow((DATA[i]-media),2);
+    }
+
+    return suma/(double)NDATA;
+}   
+
+void histograma(double *DATA,double *H, int NDATA, double *maxi, double *mini, double *delta)
+{
+
+    int i,j;
+
+    double deltaa,max,min;
+    double norma;
+
+    max = -100000000;
+    min = +100000000;
+
+    for(i=0;i<NDATA;i++)
+    {
+        if(DATA[i] > max) max = DATA[i];
+        if(DATA[i] < min) min = DATA[i];
+    }
+
+    deltaa = (max-min)/N_Inter;
+    norma = 1/(NDATA*deltaa);
+
+    for(i=0;i<NDATA;i++)
+    {
+        j=(DATA[i]-min)/deltaa;
+        if (j==N_Inter) j--;
+
+        H[j]++;
+    }
+
+    for(i=0;i<N_Inter;i++)
+    {
+        H[i]*=norma;
+    }
+
+    *maxi = max;
+    *mini = min;
+    *delta = deltaa;
+
+}
+
+double Cv(double *e, int NDATA)
+{
+    return 2*V*NDATA*Var(e,NDATA);
+}
+
+double X(double *m, int NDATA)
+{
+    int i;
+    double mm[NDATA];
+
+    for(i=0;i<NDATA;i++)
+    {
+        mm[i]=fabs(m[i]);
+    }
+
+    return V*NDATA*Var(mm,NDATA);    
+}
+
+void calculos(double *e,double *m, int NDATA, double *results)
+{
+
+    results[0] = mean(e,NDATA);
+    results[1] = mean(m,NDATA);
+    results[2] = Cv(e,NDATA);
+    results[3] = X(m,NDATA);
+
+}
+
+
+
