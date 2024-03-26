@@ -29,14 +29,14 @@
             "args": [
                 "-Wall",
                 "-g",
-                "algorithmsDATA.c",
-                "algorithmsNET.c",
-                "main.c",
+                "${workspaceFolder}/algorithmsDATA.c",
+                "${workspaceFolder}/algorithmsNET.c",
+                "${workspaceFolder}/main.c",
                 "-o",
-                "ising.exe"
+                "${workspaceFolder}/ising.exe"
             ],
             "options": {
-                "cwd": "${workspaceFolder}"
+                "cwd": "C:\\msys64\\ucrt64\\bin"
             },
             "problemMatcher": "$gcc",
             "group": {
@@ -60,6 +60,29 @@
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": "$gcc",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Compiles all the *.c files in the working in debugging mode"
+        },
+        {
+            "type": "shell",
+            "label": "Buid main file with debugging activated (especial)",
+            "command": "C:\\msys64\\ucrt64\\bin\\gcc.exe",
+            "args": [
+                "-g",
+                "-Wall",
+                "${workspaceFolder}/algorithmsDATA.c",
+                "${workspaceFolder}/algorithmsNET.c",
+                "${workspaceFolder}/main.c",
+                "-o",
+                "${workspaceFolder}/ising.exe"
+            ],
+            "options": {
+                "cwd": "C:\\msys64\\ucrt64\\bin"
             },
             "problemMatcher": "$gcc",
             "group": {
