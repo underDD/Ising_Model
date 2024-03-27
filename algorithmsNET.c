@@ -42,9 +42,9 @@ int spinrandom(void)
 
     omega = parisirapuano();
 
-    if (omega>0.5) return -1;
-
-    return 1;
+    if (omega > 0.5) return -1;
+    else
+        return 1;
 
 }
 
@@ -152,6 +152,7 @@ void offsets(){
         xm[i]=-1;
         ym[i]=-L;
     }
+
     xp[L-1]=1-L;
     yp[L-1]=-L*(L-1);
     xm[0]=L-1;
@@ -162,7 +163,8 @@ void offsets(){
 /*
     Calcula la energia intensiva de una configuracion
 */
-float energia(int *S){
+float energia(int *S)
+{
 
     int E;
     int n,x,y;
@@ -185,7 +187,8 @@ float energia(int *S){
     Calcula la magnetizacion intensiva de una configuracion
 
 */
-float magneto(int *S){
+float magneto(int *S)
+{
 
     int M;
     int i;

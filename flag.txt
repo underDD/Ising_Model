@@ -1,7 +1,8 @@
 flag 0
-Beta_0 0.01
-Beta_f 1.40
-dBEta 0.001
-Nterm 1000000
-Nmed 100000
-Nmc 1000
+Beta_0 0.7
+Beta_f 2
+dBEta 0.01
+Nterm 500
+Nmed 10000
+Nmc 10
+

@@ -51,7 +51,7 @@ int loadParameters(Parameters *parameters) {
             } else if (strcmp(token,"Nmc")==0)
             {
 
-                parameters->Nmc=atof(strtok(NULL," "));
+                parameters->Nmc=atof(strtok(NULL,"\n"));
             }
 
         }
