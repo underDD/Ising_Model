@@ -4,7 +4,7 @@
 #include <math.h>
 #include <time.h>
 
-#define L 64
+#define L 16
 #define V L*L
 #define N_DATA 10000
 #define N_Inter 100

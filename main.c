@@ -46,6 +46,11 @@ int main(){
         sprintf(name,"results/term_%d_%d_%.2f.txt",p.Nterm,L,beta);
         fout = fopen(name,"wt");
 
+        e = m = 0;
+        e = energia(S);
+        m = fabs(magneto(S));
+        fprintf(fout,"%d\t%f\t%f\n",0, e, m);
+
         for(pasoTerm=0;pasoTerm < p.Nterm;pasoTerm++)
         {
             e = m = 0;
@@ -56,7 +61,7 @@ int main(){
             e = energia(S);
             m = magneto(S);
             
-            fprintf(fout,"%d\t%f\t%f\n",pasoTerm*p.Nmc, e, m);
+            fprintf(fout,"%d\t%f\t%f\n",pasoTerm*p.Nmc+10, e, m);
         }
 
         saveconfig(S);
@@ -67,26 +72,30 @@ int main(){
 
     #ifdef SIMULACION
 
+        hyst = 0;
    // for(hyst=0;hyst<2;hyst++)
         for(pasoBeta=0;pasoBeta<stepsBeta;pasoBeta++)
         {
+            
             probabilidad(prob,beta);
             sprintf(name,"results/med_%d_%d_%.2f.txt",hyst,L,beta);
             fout = fopen(name,"wt");
 
-            for(pasoTerm=0;pasoTerm<p.Nterm;pasoTerm++)
-            {
-                metropolis(S,prob);
-                //printf("Paso de termalizacion %d completado\n",pasoTerm);
-            }
-
             for(pasoMed=0;pasoMed<p.Nmed;pasoMed++)
             {
+                e = m = 0;
                 for(pasoMC=0;pasoMC<p.Nmc;pasoMC++)
+                {
                     metropolis(S,prob);
+                }
+                
+                e = energia(S);
+                m = fabs(magneto(S));
 
-                 //fprintf(fout,"%d\t%lf\t%lf\n",pasoMed, energia(S), magneto(S));
+                fprintf(fout,"%d\t%f\t%f\n",pasoMed, e, m);
             }
+
+            beta+=p.dB;
 
             fclose(fout);
         }

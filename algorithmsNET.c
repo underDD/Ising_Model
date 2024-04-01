@@ -201,7 +201,7 @@ float magneto(int *S)
 
     //if(M<0) M=-M;
 
-    return M/(float)V;
+    return M/(float)(V);
 }
 
 
@@ -231,7 +231,7 @@ void probabilidad(float *prob,float beta)
 void metropolis(int *s, float *prob){
 
     int n,x,y,IND;
-    double omega;
+    double omega,p;
 
     n=0;
     IND=0;
@@ -243,8 +243,9 @@ void metropolis(int *s, float *prob){
         {
             IND = 2+s[n]*(s[n+xp[x]]+s[n+yp[y]]+s[n+xm[x]]+s[n+ym[y]])/2;
             omega=parisirapuano();
+            p=prob[IND];
 
-            if (prob[IND] > omega)
+            if (p > omega)
             {
                 //printf("%lf \t %d\n", omega, IND);
                 s[n] = -s[n];
