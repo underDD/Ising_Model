@@ -55,13 +55,11 @@ int main(){
         {
             e = m = 0;
 
-            for(pasoMC=0;pasoMC<p.Nmc;pasoMC++)
-                    metropolis(S,prob);
-
+            metropolis(S,prob); 
             e = energia(S);
-            m = magneto(S);
+            m = fabs(magneto(S));
             
-            fprintf(fout,"%d\t%f\t%f\n",pasoTerm*p.Nmc+10, e, m);
+            fprintf(fout,"%d\t%f\t%f\n",pasoTerm, e, m);
         }
 
         saveconfig(S);
@@ -76,10 +74,20 @@ int main(){
    // for(hyst=0;hyst<2;hyst++)
         for(pasoBeta=0;pasoBeta<stepsBeta;pasoBeta++)
         {
-            
+
             probabilidad(prob,beta);
             sprintf(name,"results/med_%d_%d_%.2f.txt",hyst,L,beta);
             fout = fopen(name,"wt");
+
+            for(pasoTerm=0;pasoTerm < p.Nterm;pasoTerm++)
+            {
+                
+                e = m = 0;
+                metropolis(S,prob); 
+                e = energia(S);
+                m = fabs(magneto(S));
+
+            }
 
             for(pasoMed=0;pasoMed<p.Nmed;pasoMed++)
             {

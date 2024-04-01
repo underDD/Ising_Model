@@ -7,7 +7,6 @@
             "args": [
                 "-Wall",
                 "-g",
-                "-O3",
                 "algorithmsDATA.c",
                 "algorithmsNET.c",
                 "main.c",

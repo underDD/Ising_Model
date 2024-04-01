@@ -4,7 +4,7 @@
 #include <math.h>
 #include <time.h>
 
-#define L 16
+#define L 64
 #define V L*L
 #define N_DATA 10000
 #define N_Inter 100
@@ -14,8 +14,8 @@
 #define MAX_STR_LEN 256
 
 #define ACEPTANCIA
-#define TERMALIZACION
-//#define SIMULACION
+//#define TERMALIZACION
+#define SIMULACION
 
 typedef struct Parameters {
     int flag;
