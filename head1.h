@@ -34,14 +34,13 @@ extern int Ntot, Nacep;
 
 extern int loadParameters(Parameters *parameters);
 extern void saveconfig(int *config);
-extern void calculos(double *e,double *m, int NDATA, double *results);
-extern double X(double *m, int NDATA);
-extern double Cv(double *e, int NDATA);
-extern void histograma(double *DATA,double *H, int NDATA, double *maxi, double *mini, double *delta);
-extern double e2(double e);
-extern double m2(double m);
-extern double mean(double *DATA,int NDATA);
-extern double Var(double *DATA, int NDATA);
+extern float X(float *m, int NDATA);
+extern float Cv(float *e, int NDATA);
+extern void histograma(float *DATA,float *H, int NDATA, float *maxi, float *mini, float *delta);
+extern float e2(float e);
+extern float m2(float m);
+extern float mean(float *DATA,int NDATA);
+extern float Var(float *DATA, int NDATA);
 
 // algorithmsNET.C : algoritmos para tratar la red
 

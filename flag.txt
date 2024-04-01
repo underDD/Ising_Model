@@ -1,8 +1,8 @@
 flag 0
-Beta_0 0.4
+Beta_0 0.05
 Beta_f 2.0
 dBeta 0.05
-Nterm 1000
-Nmed 10
-Nmc 1
+Nterm 40
+Nmed 50
+Nmc 5
 

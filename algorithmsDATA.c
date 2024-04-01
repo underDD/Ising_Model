@@ -20,7 +20,7 @@ int loadParameters(Parameters *parameters) {
 
             if (strcmp(token,"flag") == 0)
             { //Se compara el valor del token con el del nombre de la variable
-                //strtok para encontrar el siguiente espacio (final de la frase) tomando asi el valor de la variable en char y se transforma a double con atof
+                //strtok para encontrar el siguiente espacio (final de la frase) tomando asi el valor de la variable en char y se transforma a float con atof
                 parameters->flag=atof(strtok(NULL," "));
 
             } else if (strcmp(token,"Beta_0")==0)
@@ -87,21 +87,21 @@ void saveconfig(int *config) // La guardo alreves que en teoría, es decir, la p
 }
 
 
-double e2(double e)
+float e2(float e)
 {
     return e*e;
 }
 
-double m2(double m)
+float m2(float m)
 {
     return m*m;
 }
 
 
-double mean(double *DATA,int NDATA)
+float mean(float *DATA,int NDATA)
 {
     int i;
-    double suma;
+    float suma;
 
     suma=0;
 
@@ -110,15 +110,15 @@ double mean(double *DATA,int NDATA)
         suma+=DATA[i];
     }
 
-    return suma/(double)NDATA;
+    return suma/(float)NDATA;
 
 }
 
-double Var(double *DATA, int NDATA)
+float Var(float *DATA, int NDATA)
 {
     int i=0;
-    double suma;
-    double media;
+    float suma;
+    float media;
 
     suma=0;
     media=mean(DATA,NDATA);
@@ -128,16 +128,16 @@ double Var(double *DATA, int NDATA)
         suma+=pow((DATA[i]-media),2);
     }
 
-    return suma/(double)NDATA;
+    return suma/(float)NDATA;
 }   
 
-void histograma(double *DATA,double *H, int NDATA, double *maxi, double *mini, double *delta)
+void histograma(float *DATA,float *H, int NDATA, float *maxi, float *mini, float *delta)
 {
 
     int i,j;
 
-    double deltaa,max,min;
-    double norma;
+    float deltaa,max,min;
+    float norma;
 
     max = -100000000;
     min = +100000000;
@@ -170,33 +170,20 @@ void histograma(double *DATA,double *H, int NDATA, double *maxi, double *mini, d
 
 }
 
-double Cv(double *e, int NDATA)
+float Cv(float *e, int NDATA)
 {
-    return 2*V*NDATA*Var(e,NDATA);
+    return 2*V*Var(e,NDATA);
 }
 
-double X(double *m, int NDATA)
+float X(float *m, int NDATA)
 {
     int i;
-    double mm[NDATA];
+    float mm[NDATA];
 
     for(i=0;i<NDATA;i++)
     {
         mm[i]=fabs(m[i]);
     }
 
-    return V*NDATA*Var(mm,NDATA);    
+    return V*Var(mm,NDATA);    
 }
-
-void calculos(double *e,double *m, int NDATA, double *results)
-{
-
-    results[0] = mean(e,NDATA);
-    results[1] = mean(m,NDATA);
-    results[2] = Cv(e,NDATA);
-    results[3] = X(m,NDATA);
-
-}
-
-
-

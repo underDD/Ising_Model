@@ -98,7 +98,7 @@ int main(){
                 }
                 
                 e = energia(S);
-                m = fabs(magneto(S));
+                m = magneto(S);
 
                 fprintf(fout,"%d\t%f\t%f\n",pasoMed, e, m);
             }
