@@ -138,9 +138,15 @@ void histograma(float *DATA,float *H, int NDATA, float *maxi, float *mini, float
 
     float deltaa,max,min;
     float norma;
+    float h;
 
     max = -100000000;
-    min = +100000000;
+    min = 100000000;
+
+    for(i=0;i<N_Inter;i++)
+    {
+        H[i]=0;
+    }
 
     for(i=0;i<NDATA;i++)
     {
@@ -149,12 +155,12 @@ void histograma(float *DATA,float *H, int NDATA, float *maxi, float *mini, float
     }
 
     deltaa = (max-min)/N_Inter;
-    norma = 1/(NDATA*deltaa);
+    norma = 1.0/(NDATA*deltaa);
 
     for(i=0;i<NDATA;i++)
     {
         j=(DATA[i]-min)/deltaa;
-        if (j==N_Inter) j--;
+        if (j == N_Inter) j--;
 
         H[j]++;
     }
@@ -162,6 +168,7 @@ void histograma(float *DATA,float *H, int NDATA, float *maxi, float *mini, float
     for(i=0;i<N_Inter;i++)
     {
         H[i]*=norma;
+        h=H[i];
     }
 
     *maxi = max;

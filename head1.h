@@ -6,8 +6,7 @@
 
 #define L 8
 #define V L*L
-#define N_DATA 10000
-#define N_Inter 100
+#define N_Inter 50
 #define fran rand()/((double)RAND_MAX+1)
 #define NormRAnu (2.3283063671E-10F)
 

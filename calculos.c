@@ -79,6 +79,7 @@ int main()
 
         float H[N_Inter];
         float max, min, delta;
+        float area;
 
         beta = p.b_0;
         sprintf(name,"medidas/histo_%d_%.2f.txt",L,beta);
@@ -96,18 +97,26 @@ int main()
         histm = fopen("results/histogramam.txt","wt");
 
         histograma(e,H,p.Nmed,&max,&min,&delta);
+        area=0;
 
         for(i=0;i<N_Inter;i++)
         {
             fprintf(histe,"%f\t%f\n",i*delta+min, H[i]);
+            area+=H[i]*delta;
         }
+        
+        printf("Area del histograma de energias = %f\n",area);
+        area=0;
 
         histograma(m,H,p.Nmed,&max,&min,&delta);
 
         for(i=0;i<N_Inter;i++)
         {
             fprintf(histm,"%f\t%f\n",i*delta+min, H[i]);
+            area+=H[i]*delta;
         }
+
+        printf("Area del histograma de magnetizacion = %f\n",area);
 
         fclose(hist);
         fclose(histe);
