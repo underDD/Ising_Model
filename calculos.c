@@ -20,16 +20,15 @@ int main()
     char name[MAX_STR_LEN];
 
     nFich = (int)((p.b_f-p.b_0)/p.dB);
+
     beta = p.b_0;
     hyst = 0;
     j = 0;
-
     fout = fopen("results/results.txt","wt");
 
+
     for(i=0;i<nFich;i++)
-    {
-         
-        sprintf(name,"results/med_%d_%d_%.2f.txt",hyst,L,beta);
+    {   sprintf(name,"results/med_%d_%d_%.2f.txt",hyst,L,beta);
         fin = fopen(name,"rt");
         em = mm = Cvm = Xm = 0;
 
@@ -47,7 +46,35 @@ int main()
         mm = fabs(mean(m,p.Nmed));
         Cvm = Cv(e,p.Nmed);
         Xm = X(m,p.Nmed);
-        fprintf(fout, "%f\t%f\t%f\t%f\t%f\n", beta, em, mm , Cvm, Xm);
+        fprintf(fout, "%d,%f\t%f\t%f\t%f\t%f\n",hyst, beta, em, mm , Cvm, Xm);
+
+        beta += p.dB;
+        fclose(fin);
+
+    }
+    hyst = 1;
+    j = 0;
+    beta = p.b_0;
+for(i=0;i<nFich+1;i++)
+    {   sprintf(name,"results/med_%d_%d_%.2f.txt",hyst,L,beta);
+        fin = fopen(name,"rt");
+        em = mm = Cvm = Xm = 0;
+
+        if (fin == NULL) {printf("ERROR leyendo el fichero de beta %f",beta); exit(1);}
+        
+        while(!feof(fin))
+        {
+            
+            fscanf(fin,"%d",&j);
+            fscanf(fin,"%f%f",&e[j],&m[j]);
+
+        }
+
+        em = mean(e,p.Nmed);
+        mm = fabs(mean(m,p.Nmed));
+        Cvm = Cv(e,p.Nmed);
+        Xm = X(m,p.Nmed);
+        fprintf(fout, "%d\t%f\t%f\t%f\t%f\t%f\n",hyst, beta, em, mm , Cvm, Xm);
 
         beta += p.dB;
         fclose(fin);
