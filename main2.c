@@ -70,14 +70,13 @@ int main(){
 
     #ifdef SIMULACION
 
-        hyst = 0;
-        for(hyst=0;hyst<2;hyst++)
-        {
-            for(pasoBeta=-stepsBeta;pasoBeta<stepsBeta+1;pasoBeta++)
+        //for(hyst=0;hyst<2;hyst++)
+        
+            for(pasoBeta=0;pasoBeta<stepsBeta;pasoBeta++)
             {
 
                 probabilidad(prob,beta);
-                sprintf(name,"results/med_%d_%d_%.2f.txt",hyst,L,beta);
+                sprintf(name,"medidas/med_%d_%d_%.2f.txt",hyst,L,beta);
                 fout = fopen(name,"wt");
 
                 for(pasoTerm=0;pasoTerm < p.Nterm;pasoTerm++)
@@ -106,18 +105,44 @@ int main(){
 
                 beta+=p.dB;
 
-                if(pasoBeta == -1)
-                {
-                    p.dB = -p.dB;
-                    hyst = 1;
-                }
-                
                 fclose(fout);
 
             }
-        }
+
+            //p.dB = -p.dB;
+        
 
     #endif // SIMULACION
+
+    #ifdef HISTOGRAMAS
+
+        beta = p.b_0;
+        probabilidad(prob,beta);
+        sprintf(name,"medidas/histo_%d_%.2f.txt",L,beta);
+        fout = fopen(name,"wt");
+
+        for(pasoTerm=0;pasoTerm < p.Nterm;pasoTerm++)
+            metropolis(S,prob); 
+
+
+
+        for(pasoMed=0;pasoMed<p.Nmed;pasoMed++)
+        {
+            e = m = 0;
+            for(pasoMC=0;pasoMC<p.Nmc;pasoMC++)
+            {
+                metropolis(S,prob);
+            }
+            
+            e = energia(S);
+            m = magneto(S);
+
+            fprintf(fout,"%d\t%f\t%f\n",pasoMed, e, m);
+        }
+
+        fclose(fout);
+
+    #endif //HISTOGRAMAS
 
 
     #ifdef ACEPTANCIA

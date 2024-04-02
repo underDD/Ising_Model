@@ -1,1 +1,0 @@
-beta	<e>	error<e>	<m>	Cv	errorCv	<m>	error<m>	X	errorX

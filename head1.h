@@ -4,7 +4,7 @@
 #include <math.h>
 #include <time.h>
 
-#define L 64
+#define L 8
 #define V L*L
 #define N_DATA 10000
 #define N_Inter 100
@@ -15,7 +15,8 @@
 
 #define ACEPTANCIA
 //#define TERMALIZACION
-#define SIMULACION
+//#define SIMULACION
+#define HISTOGRAMAS
 
 typedef struct Parameters {
     int flag;
@@ -41,7 +42,7 @@ extern float e2(float e);
 extern float m2(float m);
 extern float mean(float *DATA,int NDATA);
 extern float Var(float *DATA, int NDATA);
-void bloques(float *DATA, int NDATA, int size, float *med, float *error, float *med2, float *error2);
+void bloques(float *DATA, int NDATA, int size, float *med, float *error, float *med2, float *error2, int iden);
 
 // algorithmsNET.C : algoritmos para tratar la red
 

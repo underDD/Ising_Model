@@ -188,7 +188,7 @@ float X(float *m, int NDATA)
     return V*Var(mm,NDATA);    
 }
 
-void bloques(float *DATA, int NDATA, int size, float *med, float *error, float *med2, float *error2) 
+void bloques(float *DATA, int NDATA, int size, float *med, float *error, float *med2, float *error2, int iden) 
 {
     int i,j;
     int Nblock;
@@ -215,7 +215,11 @@ void bloques(float *DATA, int NDATA, int size, float *med, float *error, float *
         x2[i] = suma2/size;
         x[i] = suma/size;
 
-        PEDO[i]=2*V*(x2[i]-x[i]);
+        
+        if (iden == 1)
+            PEDO[i]=2*V*(x2[i]-x[i]*x[i]);
+        else
+            PEDO[i]=V*(x2[i]-x[i]*x[i]);
 
     }
 
