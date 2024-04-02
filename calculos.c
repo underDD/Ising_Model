@@ -8,7 +8,7 @@ int main()
 
     float e[p.Nmed], m[p.Nmed];
     float beta;
-    float em, mm, Cvm, Xm;
+    float med1, error1, med2, error2;
 
     FILE *fin;
     FILE *fout;
@@ -26,11 +26,12 @@ int main()
     j = 0;
     fout = fopen("results/results.txt","wt");
 
+    fprintf(fout,"beta\t<e>\terror<e>\t<m>\tCv\terrorCv\t<m>\terror<m>\tX\terrorX\n");
 
     for(i=0;i<nFich;i++)
-    {   sprintf(name,"results/med_%d_%d_%.2f.txt",hyst,L,beta);
+    {   
+        sprintf(name,"results/med_%d_%d_%.2f.txt",hyst,L,beta);
         fin = fopen(name,"rt");
-        em = mm = Cvm = Xm = 0;
 
         if (fin == NULL) {printf("ERROR leyendo el fichero de beta %f",beta); exit(1);}
         
@@ -42,23 +43,30 @@ int main()
 
         }
 
-        em = mean(e,p.Nmed);
-        mm = fabs(mean(m,p.Nmed));
-        Cvm = Cv(e,p.Nmed);
-        Xm = X(m,p.Nmed);
-        fprintf(fout, "%d,%f\t%f\t%f\t%f\t%f\n",hyst, beta, em, mm , Cvm, Xm);
+        fprintf(fout,"%f\t", beta);
+        bloques(e,p.Nmed,10,&med1,&error1,&med2,&error2);
+        
+        fprintf(fout,"%f\t%f\t%f\t%f\t",med1,error1,med2,error2);
+
+        bloques(m,p.Nmed,10,&med1,&error1,&med2,&error2);
+        
+        fprintf(fout,"%f\t%f\t%f\t%f\t",med1,error1,med2,error2);
 
         beta += p.dB;
         fclose(fin);
 
     }
+
     hyst = 1;
     j = 0;
     beta = p.b_0;
-for(i=0;i<nFich+1;i++)
-    {   sprintf(name,"results/med_%d_%d_%.2f.txt",hyst,L,beta);
+
+    /*
+    for(i=0;i<nFich+1;i++)
+    {   
+
+        sprintf(name,"results/med_%d_%d_%.2f.txt",hyst,L,beta);
         fin = fopen(name,"rt");
-        em = mm = Cvm = Xm = 0;
 
         if (fin == NULL) {printf("ERROR leyendo el fichero de beta %f",beta); exit(1);}
         
@@ -80,6 +88,7 @@ for(i=0;i<nFich+1;i++)
         fclose(fin);
 
     }
+    */
 
     printf("FIN");
     fclose(fout);

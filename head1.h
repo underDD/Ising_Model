@@ -41,6 +41,7 @@ extern float e2(float e);
 extern float m2(float m);
 extern float mean(float *DATA,int NDATA);
 extern float Var(float *DATA, int NDATA);
+void bloques(float *DATA, int NDATA, int size, float *med, float *error, float *med2, float *error2);
 
 // algorithmsNET.C : algoritmos para tratar la red
 

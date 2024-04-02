@@ -105,12 +105,11 @@ int main(){
 
             beta+=p.dB;
 
-            if(pasoBeta == -1){
-            p.dB = -p.dB;
-            hyst = 1;
+            if(pasoBeta == -1)
+            {
+                p.dB = -p.dB;
+                hyst = 1;
             }
-
-
             
             fclose(fout);
         }

@@ -9,8 +9,8 @@
                 "-g",
                 "algorithmsDATA.c",
                 "algorithmsNET.c",
-                //"main.c",
-                "calculos.c",
+                "main.c",
+                //"calculos.c",
                 "-o",
                 "ising.exe"
             ],
@@ -56,8 +56,8 @@
                 "-Wall",
                 "algorithmsDATA.c",
                 "algorithmsNET.c",
-                //"main.c",
-                "calculos.c",
+                "main.c",
+                //"calculos.c",
                 "-o",
                 "ising.exe"
             ],

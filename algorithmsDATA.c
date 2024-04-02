@@ -187,3 +187,42 @@ float X(float *m, int NDATA)
 
     return V*Var(mm,NDATA);    
 }
+
+void bloques(float *DATA, int NDATA, int size, float *med, float *error, float *med2, float *error2) 
+{
+    int i,j;
+    int Nblock;
+
+    float suma;
+    float suma2;
+
+    Nblock = (int)(NDATA/size);
+    float x2[Nblock];
+    float x[Nblock];
+    float PEDO[Nblock];
+
+    for(i=0;i<Nblock;i++)
+    {
+
+        suma = 0;
+        suma2 = 0;
+        for(j=0;j<size;j++)
+        {
+            suma+= DATA[i*size+j];
+            suma2+= DATA[i*size+j]*DATA[i*size+j];
+        }
+
+        x2[i] = suma2/size;
+        x[i] = suma/size;
+
+        PEDO[i]=2*V*(x2[i]-x[i]);
+
+    }
+
+    *med2 = mean(PEDO, Nblock);
+    *error2 = sqrt(Var(PEDO, Nblock));
+    
+    *med = mean(x,Nblock);
+    *error = sqrt(Var(x,Nblock));
+    
+}
