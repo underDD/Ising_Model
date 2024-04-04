@@ -7,10 +7,11 @@
             "args": [
                 "-Wall",
                 "-g",
+                "-O3",
                 "algorithmsDATA.c",
                 "algorithmsNET.c",
-                //"main2.c",
-                "calculos.c",
+                "main2.c",
+                //"calculos.c",
                 "-o",
                 "ising.exe"
             ],
@@ -33,7 +34,8 @@
                 "-g",
                 "${workspaceFolder}/algorithmsDATA.c",
                 "${workspaceFolder}/algorithmsNET.c",
-                "${workspaceFolder}/main.c",
+                "${workspaceFolder}/main2.c",
+                //"${workspaceFolder}/calculos.c",
                 "-o",
                 "${workspaceFolder}/ising.exe"
             ],
@@ -56,8 +58,8 @@
                 "-Wall",
                 "algorithmsDATA.c",
                 "algorithmsNET.c",
-                //"main2.c",
-                "calculos.c",
+                "main2.c",
+                //"calculos.c",
                 "-o",
                 "ising.exe"
             ],
@@ -80,7 +82,8 @@
                 "-Wall",
                 "${workspaceFolder}/algorithmsDATA.c",
                 "${workspaceFolder}/algorithmsNET.c",
-                "${workspaceFolder}/main.c",
+                "${workspaceFolder}/main2.c",
+                //"${workspaceFolder}/calculos.c",
                 "-o",
                 "${workspaceFolder}/ising.exe"
             ],
@@ -94,6 +97,7 @@
             },
             "detail": "Compiles all the *.c files in the working in debugging mode"
         }
+        
     ],
     "version": "2.0.0"
 }

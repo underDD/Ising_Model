@@ -44,14 +44,20 @@ int main(){
         
         probabilidad(prob,beta);
         sprintf(name,"results/term_%d_%d_%.2f.txt",p.Nterm,L,beta);
-        fout = fopen(name,"wt");
+        //fout = fopen(name,"wt");
+        fout = fopen(name,"wb");
 
         e = m = 0;
+        pasoTerm = 0;
         e = energia(S);
         m = fabs(magneto(S));
-        fprintf(fout,"%d\t%f\t%f\n",0, e, m);
+        //fprintf(fout,"%d\t%f\t%f\n",0, e, m);
 
-        for(pasoTerm=0;pasoTerm < p.Nterm;pasoTerm++)
+        fwrite(&pasoTerm, sizeof(int), 1, fout);
+        fwrite(&e, sizeof(float), 1, fout);
+        fwrite(&m, sizeof(float), 1, fout);
+
+        for(pasoTerm=1;pasoTerm < p.Nterm;pasoTerm++)
         {
             e = m = 0;
 
@@ -60,6 +66,9 @@ int main(){
             m = fabs(magneto(S));
             
             fprintf(fout,"%d\t%f\t%f\n",pasoTerm, e, m);
+
+            //fwrite(&e, sizeof(float), 1, fout);
+            //fwrite(&m, sizeof(float), 1, fout);
         }
 
         saveconfig(S);
@@ -70,23 +79,22 @@ int main(){
 
     #ifdef SIMULACION
 
-        //for(hyst=0;hyst<2;hyst++)
+        // for(hyst=0;hyst<2;hyst++)
         
+            hyst = 0;
             for(pasoBeta=0;pasoBeta<stepsBeta;pasoBeta++)
             {
 
                 probabilidad(prob,beta);
                 sprintf(name,"medidas/med_%d_%d_%.2f.txt",hyst,L,beta);
                 fout = fopen(name,"wt");
+                //fout = fopen(name,"wb");
 
                 for(pasoTerm=0;pasoTerm < p.Nterm;pasoTerm++)
                 {
-                    
-                    e = m = 0;
+                
                     metropolis(S,prob); 
-                    e = energia(S);
-                    m = fabs(magneto(S));
-
+    
                 }
 
                 for(pasoMed=0;pasoMed<p.Nmed;pasoMed++)
@@ -101,15 +109,17 @@ int main(){
                     m = magneto(S);
 
                     fprintf(fout,"%d\t%f\t%f\n",pasoMed, e, m);
+                    //fwrite(&e, sizeof(float), 1, fout);
+                    //fwrite(&m, sizeof(float), 1, fout);
                 }
 
                 beta+=p.dB;
 
-                fclose(fout);
+                
 
             }
 
-            //p.dB = -p.dB;
+            // p.dB = -p.dB;
         
 
     #endif // SIMULACION
@@ -120,6 +130,7 @@ int main(){
         probabilidad(prob,beta);
         sprintf(name,"medidas/histo_%d_%.2f.txt",L,beta);
         fout = fopen(name,"wt");
+        //fout = fopen(name,"wb");
 
         for(pasoTerm=0;pasoTerm < p.Nterm;pasoTerm++)
             metropolis(S,prob); 
@@ -138,6 +149,8 @@ int main(){
             m = magneto(S);
 
             fprintf(fout,"%d\t%f\t%f\n",pasoMed, e, m);
+            //fwrite(&e, sizeof(float), 1, fout);
+            //fwrite(&m, sizeof(float), 1, fout);
         }
 
         fclose(fout);

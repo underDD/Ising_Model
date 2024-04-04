@@ -19,7 +19,10 @@ int main()
     int i,j;
     int hyst;
     int nFich;
+    int size;
 
+    char nameE[MAX_STR_LEN];
+    char nameM[MAX_STR_LEN];
     char name[MAX_STR_LEN];
 
     nFich = (int)((p.b_f-p.b_0)/p.dB);
@@ -27,20 +30,26 @@ int main()
     beta = p.b_0;
     hyst = 0;
     j = 0;
-    foute = fopen("results/resultse.txt","wt");
-    foutm = fopen("results/resultsm.txt","wt");
+    size = 100;
+
+    sprintf(nameE,"results/resultse_%d_%d.txt",size,L);
+    sprintf(nameM,"results/resultsm_%d_%d.txt",size,L);
+
+    foute = fopen(nameE,"wt");
+    foutm = fopen(nameM,"wt");
 
     fprintf(foute,"beta\t<e>\terror<e>\tCv\terrorCv\n");
     fprintf(foutm,"beta\t<m>\terror<m>\tX\terrorX\n");
     
     #ifdef SIMULACION
 
+        // for(hyst=0; hyst<2; hyst++)
         for(i=0;i<nFich;i++)
         {   
-            sprintf(name,"medidas/med_%d_%d_%.2f.txt",hyst,L,beta);
+            sprintf(name,"medidas/%d/med_%d_%d_%.2f.txt",L,hyst,L,beta);
             fin = fopen(name,"rt");
 
-            if (fin == NULL) {printf("ERROR leyendo el fichero de beta %f",beta); exit(1);}
+            if (fin == NULL) {printf("ERROR leyendo el fichero de beta %f\n",beta); exit(1);}
             
             while(!feof(fin))
             {
@@ -51,14 +60,12 @@ int main()
 
             }
 
-            
-            
-            bloques(e,p.Nmed,20,&med1,&error1,&med2,&error2,1);
+            bloques(e,p.Nmed,size,&med1,&error1,&med2,&error2,1);
             
             fprintf(foute,"%f\t", beta);
             fprintf(foute,"%f\t%f\t%f\t%f\n",med1,error1,med2,error2);
 
-            bloques(m,p.Nmed,20,&med1,&error1,&med2,&error2,2);
+            bloques(m,p.Nmed,size,&med1,&error1,&med2,&error2,2);
             
             fprintf(foutm,"%f\t", beta);
             fprintf(foutm,"%f\t%f\t%f\t%f\n",med1,error1,med2,error2);
@@ -81,9 +88,13 @@ int main()
         float max, min, delta;
         float area;
 
+        char nameE[MAX_STR_LEN];
+        char nameM[MAX_STR_LEN];
+
         beta = p.b_0;
         sprintf(name,"medidas/histo_%d_%.2f.txt",L,beta);
         hist = fopen(name,"rt");
+        //hist = fopen(name,"rb");
 
         while(!feof(hist))
         {
@@ -92,9 +103,12 @@ int main()
             fscanf(hist,"%f%f",&e[j],&m[j]);
             
         }
-
-        histe = fopen("results/histogramae.txt","wt");
-        histm = fopen("results/histogramam.txt","wt");
+        
+        sprintf(nameE,"results/histogramae_%.2f.txt",beta);
+        sprintf(nameM,"results/histogramam_%.2f.txt",beta);
+        
+        histe = fopen(nameE,"wt");
+        histm = fopen(nameM,"wt");
 
         histograma(e,H,p.Nmed,&max,&min,&delta);
         area=0;

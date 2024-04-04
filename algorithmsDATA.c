@@ -110,7 +110,7 @@ float mean(float *DATA,int NDATA)
         suma+=DATA[i];
     }
 
-    return suma/(float)NDATA;
+    return suma/(float)(NDATA);
 
 }
 
@@ -125,10 +125,13 @@ float Var(float *DATA, int NDATA)
 
     for(i=0;i<NDATA;i++)
     {
-        suma+=pow((DATA[i]-media),2);
+        //suma+=(DATA[i]*DATA[i]);
+        suma+=((DATA[i]-media)*(DATA[i]-media));
+
     }
 
-    return suma/(float)NDATA;
+    //return ((suma/NDATA)-media*media)*NDATA/(NDATA-1.0);
+    return suma/(float)(NDATA);
 }   
 
 void histograma(float *DATA,float *H, int NDATA, float *maxi, float *mini, float *delta)
@@ -138,7 +141,6 @@ void histograma(float *DATA,float *H, int NDATA, float *maxi, float *mini, float
 
     float deltaa,max,min;
     float norma;
-    float h;
 
     max = -100000000;
     min = 100000000;
@@ -168,7 +170,6 @@ void histograma(float *DATA,float *H, int NDATA, float *maxi, float *mini, float
     for(i=0;i<N_Inter;i++)
     {
         H[i]*=norma;
-        h=H[i];
     }
 
     *maxi = max;
@@ -221,7 +222,6 @@ void bloques(float *DATA, int NDATA, int size, float *med, float *error, float *
 
         x2[i] = suma2/size;
         x[i] = suma/size;
-
         
         if (iden == 1)
             PEDO[i]=2*V*(x2[i]-x[i]*x[i]);

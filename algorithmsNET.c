@@ -137,8 +137,6 @@ void genconfig(int *config, Parameters p)
 }
 
 
-
-
 /*
     Construye los offsets necesarios para movernos por la red
 */
