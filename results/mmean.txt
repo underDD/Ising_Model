@@ -1,0 +1,19 @@
+
+set style line 1  lt 1  lw 1.5 pt 1 ps 1 lc  rgb "black"
+set style line 2  lt 1  lw 1.5 pt 2 ps 1 lc  rgb "blue"
+set style line 3  lt 1  lw 1.5 pt 3 ps 1 lc  rgb "green"
+set style line 4  lt 1  lw 1.5 pt 4 ps 1 lc  rgb "purple"
+set style line 5  lt 1  lw 1.5 pt 7 ps 1 lc  rgb "red"
+
+set title "Magnetizacion" font "Arial,20"
+set xlabel "Beta" font "Arial,16"
+set ylabel "|m|" font "Arial,16"
+set key font "Arial,16"
+set xtics font "Arial,15"  
+set ytics font "Arial,15"
+
+plot "resultsm_5_4.txt" u 1:2:3 w yerrorbars ls 1 title "L = 4"
+replot "resultsm_5_8.txt" u 1:2:3 w yerrorbars ls 2 title "L = 8"
+replot "resultsm_5_16.txt" u 1:2:3 w yerrorbars ls 3 title "L = 16"
+replot "resultsm_5_32.txt" u 1:2:3 w yerrorbars ls 4 title "L = 32"
+replot "resultsm_5_64.txt" u 1:2:3 w yerrorbars ls 5 title "L = 64"

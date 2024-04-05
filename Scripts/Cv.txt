@@ -1,0 +1,18 @@
+
+
+set style line 1  lt 1  lw 2 pt 1 ps  1 lc  rgb "red"
+set style line 2  lt 1  lw 2 pt 2 ps  2 lc  rgb "blue"
+set style line 3  lt 1  lw 2 pt 3 ps  3 lc  rgb "green"
+set style line 4  lt 1  lw 2 pt 4 ps  4 lc  rgb "black"
+
+set title "Susceptibilidad" font "Arial,20"
+set xlabel "Cv" font "Arial,16"
+set ylabel "Beta" font "Arial,16"
+set key font "Arial,16"
+set xtics font "Arial,15"  
+set ytics font "Arial,15"
+
+plot "resultse_200_8.txt" u 1:4:5 w yerrorbars with lines ls 1 title "L = 8"
+replot "resultse_200_16.txt" u 1:4:5 w yerrorbars with lines ls 2 title "L = 16"
+replot "resultse_200_32.txt" u 1:4:5 w yerrorbars with lines ls 3 title "L = 32"
+replot "resultse_200_64.txt" u 1:4:5 w yerrorbars with lines ls 4 title "L = 64"

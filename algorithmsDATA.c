@@ -120,8 +120,8 @@ float Var(float *DATA, int NDATA)
     float suma;
     float media;
 
-    suma=0;
-    media=mean(DATA,NDATA);
+    suma = 0;
+    media = mean(DATA,NDATA);
 
     for(i=0;i<NDATA;i++)
     {
@@ -196,44 +196,50 @@ float X(float *m, int NDATA)
     return V*Var(mm,NDATA);    
 }
 
-void bloques(float *DATA, int NDATA, int size, float *med, float *error, float *med2, float *error2, int iden) 
+void bloques(float *DATA, int NDATA, int Nblock, float *med, float *error, float *Cv0X, float *error2, int iden) 
 {
     int i,j;
-    int Nblock;
+    int size;
 
-    float suma;
-    float suma2;
+    size = (int)(NDATA/Nblock);
 
-    Nblock = (int)(NDATA/size);
-    float x2[Nblock];
+    float aux[size];
     float x[Nblock];
     float PEDO[Nblock];
+
+
+    for(i=0;i<size;i++)
+        {aux[i] = 0; x[i] = 0; PEDO[i]=0;}
+        
 
     for(i=0;i<Nblock;i++)
     {
 
-        suma = 0;
-        suma2 = 0;
         for(j=0;j<size;j++)
         {
-            suma+= DATA[i*size+j];
-            suma2+= DATA[i*size+j]*DATA[i*size+j];
+            aux[j]=DATA[i*size+j];
         }
-
-        x2[i] = suma2/size;
-        x[i] = suma/size;
+    
+        x[i] = mean(aux,size);
         
         if (iden == 1)
-            PEDO[i]=2*V*(x2[i]-x[i]*x[i]);
+            PEDO[i] = Cv(aux,size);
         else
-            PEDO[i]=V*(x2[i]-x[i]*x[i]);
+            PEDO[i] = X(aux,size);
 
     }
 
-    *med2 = mean(PEDO, Nblock);
-    *error2 = sqrt(Var(PEDO, Nblock));
-    
-    *med = mean(x,Nblock);
+    *med = mean(DATA,NDATA);
     *error = sqrt(Var(x,Nblock));
     
+    if (iden == 1)
+    {
+        *Cv0X = Cv(DATA,NDATA);
+        *error2 = sqrt(Var(PEDO, Nblock));  
+    }
+    else
+    {
+        *Cv0X = X(DATA,NDATA);
+        *error2 = sqrt(Var(PEDO, Nblock));
+    }
 }

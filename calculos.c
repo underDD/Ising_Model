@@ -19,7 +19,7 @@ int main()
     int i,j;
     int hyst;
     int nFich;
-    int size;
+    int Nblock;
 
     char nameE[MAX_STR_LEN];
     char nameM[MAX_STR_LEN];
@@ -30,10 +30,10 @@ int main()
     beta = p.b_0;
     hyst = 0;
     j = 0;
-    size = 100;
+    Nblock = 5;
 
-    sprintf(nameE,"results/resultse_%d_%d.txt",size,L);
-    sprintf(nameM,"results/resultsm_%d_%d.txt",size,L);
+    sprintf(nameE,"results/resultse_%d_%d.txt",Nblock,L);
+    sprintf(nameM,"results/resultsm_%d_%d.txt",Nblock,L);
 
     foute = fopen(nameE,"wt");
     foutm = fopen(nameM,"wt");
@@ -48,7 +48,7 @@ int main()
         {   
             sprintf(name,"medidas/%d/med_%d_%d_%.2f.txt",L,hyst,L,beta);
             fin = fopen(name,"rt");
-
+            
             if (fin == NULL) {printf("ERROR leyendo el fichero de beta %f\n",beta); exit(1);}
             
             while(!feof(fin))
@@ -60,12 +60,12 @@ int main()
 
             }
 
-            bloques(e,p.Nmed,size,&med1,&error1,&med2,&error2,1);
+            bloques(e,p.Nmed,Nblock,&med1,&error1,&med2,&error2,1);
             
             fprintf(foute,"%f\t", beta);
             fprintf(foute,"%f\t%f\t%f\t%f\n",med1,error1,med2,error2);
 
-            bloques(m,p.Nmed,size,&med1,&error1,&med2,&error2,2);
+            bloques(m,p.Nmed,Nblock,&med1,&error1,&med2,&error2,2);
             
             fprintf(foutm,"%f\t", beta);
             fprintf(foutm,"%f\t%f\t%f\t%f\n",med1,error1,med2,error2);
@@ -171,8 +171,7 @@ int main()
     }
     */
     
-
-    printf("FIN");
+    printf("\n--------------------FIN--------------------\n\n");
     fclose(foute);
     fclose(foutm);
     return 0;
