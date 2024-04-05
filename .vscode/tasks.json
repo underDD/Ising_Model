@@ -10,6 +10,7 @@
                 "-O3",
                 "algorithmsDATA.c",
                 "algorithmsNET.c",
+                "main.c",
                 "calculos.c",
                 "-o",
                 "ising.exe"
@@ -31,6 +32,7 @@
                 "${workspaceFolder}/algorithmsDATA.c",
                 "${workspaceFolder}/algorithmsNET.c",
                 "${workspaceFolder}/main.c",
+                "${workspaceFolder}/calculos.c",
                 "-o",
                 "${workspaceFolder}/ising.exe"
             ],
@@ -50,6 +52,7 @@
                 "-Wall",
                 "algorithmsDATA.c",
                 "algorithmsNET.c",
+                "main.c",
                 "calculos.c",
                 "-o",
                 "ising.exe"
@@ -71,6 +74,7 @@
                 "${workspaceFolder}/algorithmsDATA.c",
                 "${workspaceFolder}/algorithmsNET.c",
                 "${workspaceFolder}/calculos.c",
+                "${workspaceFolder}/main.c",
                 "-o",
                 "${workspaceFolder}/ising.exe"
             ],
