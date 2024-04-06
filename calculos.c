@@ -88,10 +88,6 @@ int main()
         float max, min, delta;
         float area;
 
-        char nameE[MAX_STR_LEN];
-        char nameM[MAX_STR_LEN];
-
-        beta = p.b_0;
         sprintf(name,"medidas/histo_%d_%.2f.txt",L,beta);
         hist = fopen(name,"rt");
         //hist = fopen(name,"rb");
@@ -104,8 +100,8 @@ int main()
             
         }
         
-        sprintf(nameE,"results/histogramae_%.2f.txt",beta);
-        sprintf(nameM,"results/histogramam_%.2f.txt",beta);
+        sprintf(nameE,"results/histo/histogramae_%d_%.2f.txt",L,beta);
+        sprintf(nameM,"results/histo/histogramam_%d_%.2f.txt",L,beta);
         
         histe = fopen(nameE,"wt");
         histm = fopen(nameM,"wt");

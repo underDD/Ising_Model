@@ -4,9 +4,9 @@
 #include <math.h>
 #include <time.h>
 
-#define L 64
+#define L 128
 #define V L*L
-#define N_Inter 50 //Numero de cajas del histograma
+#define N_Inter 40 //Numero de cajas del histograma
 #define fran rand()/((double)RAND_MAX+1)
 #define NormRAnu (2.3283063671E-10F)
 

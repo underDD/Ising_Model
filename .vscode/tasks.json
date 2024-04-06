@@ -11,7 +11,7 @@
                 "algorithmsDATA.c",
                 "algorithmsNET.c",
                 "main.c",
-                "calculos.c",
+                //"calculos.c",
                 "-o",
                 "ising.exe"
             ],
@@ -53,7 +53,7 @@
                 "algorithmsDATA.c",
                 "algorithmsNET.c",
                 "main.c",
-                "calculos.c",
+                //"calculos.c",
                 "-o",
                 "ising.exe"
             ],

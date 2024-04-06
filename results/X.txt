@@ -1,19 +1,21 @@
-
-set style line 1  lt 1  lw 1.5 pt 1 ps 1 lc  rgb "black"
-set style line 2  lt 1  lw 1.5 pt 2 ps 1 lc  rgb "blue"
-set style line 3  lt 1  lw 1.5 pt 3 ps 1 lc  rgb "green"
-set style line 4  lt 1  lw 1.5 pt 4 ps 1 lc  rgb "purple"
-set style line 5  lt 1  lw 1.5 pt 7 ps 1 lc  rgb "red"
+set style line 1  lt 1  lw 1.5 pt 1 ps 1 lc  rgb "red"
+set style line 2  lt 1  lw 1.5 pt 2 ps 1 lc  rgb "orange"
+set style line 3  lt 1  lw 1.5 pt 3 ps 1 lc  rgb "yellow"
+set style line 4  lt 1  lw 1.5 pt 4 ps 1 lc  rgb "green"
+set style line 5  lt 1  lw 1.5 pt 6 ps 1 lc  rgb "blue"
+set style line 6  lt 1  lw 1.5 pt 7 ps 1 lc  rgb "magenta"
 
 set title "Susceptibilidad" font "Arial,20"
 set xlabel "Beta" font "Arial,16"
 set ylabel "Cv" font "Arial,16"
 set key font "Arial,16"
+set key top right
 set xtics font "Arial,15"  
 set ytics font "Arial,15"
 
-plot "resultsm_5_4.txt" u 1:4:5 w yerrorbars ls 1 title "L = 4"
+plot "resultsm_5_4.txt" u 1:4:5 w yerrorbars ls 1 
 replot "resultsm_5_8.txt" u 1:4:5 w yerrorbars ls 2 title "L = 8"
 replot "resultsm_5_16.txt" u 1:4:5 w yerrorbars ls 3 title "L = 16"
 replot "resultsm_5_32.txt" u 1:4:5 w yerrorbars ls 4 title "L = 32"
 replot "resultsm_5_64.txt" u 1:4:5 w yerrorbars ls 5 title "L = 64"
+# replot "resultsm_5_128.txt" u 1:4:5 w yerrorbars ls 6 title "L = 128"
