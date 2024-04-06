@@ -4,7 +4,7 @@
 #include <math.h>
 #include <time.h>
 
-#define L 128
+#define L 32
 #define V L*L
 #define N_Inter 40 //Numero de cajas del histograma
 #define fran rand()/((double)RAND_MAX+1)
@@ -14,8 +14,9 @@
 
 //#define ACEPTANCIA
 //#define TERMALIZACION
-#define SIMULACION
+//#define SIMULACION
 //#define HISTOGRAMAS
+#define HISTERESIS
 
 typedef struct Parameters {
     int flag;

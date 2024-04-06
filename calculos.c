@@ -40,43 +40,96 @@ int main()
 
     fprintf(foute,"beta\t<e>\terror<e>\tCv\terrorCv\n");
     fprintf(foutm,"beta\t<m>\terror<m>\tX\terrorX\n");
-    
+
+
     #ifdef SIMULACION
 
-        // for(hyst=0; hyst<2; hyst++)
-        for(i=0;i<nFich;i++)
-        {   
-            sprintf(name,"medidas/%d/med_%d_%d_%.2f.txt",L,hyst,L,beta);
-            fin = fopen(name,"rt");
-            
-            if (fin == NULL) {printf("ERROR leyendo el fichero de beta %f\n",beta); exit(1);}
-            
-            while(!feof(fin))
-            {
+            for(i=0;i<nFich;i++)
+            {   
+                sprintf(name,"medidas/%d/med_%d_%d_%.2f.txt",L,hyst,L,beta);
+                fin = fopen(name,"rt");
                 
-                fscanf(fin,"%d",&j);
-                fscanf(fin,"%f%f",&e[j],&eme);
-                m[j]=fabs(eme);
+                if (fin == NULL) {printf("ERROR leyendo el fichero de beta %f\n",beta); exit(1);}
+                
+                while(!feof(fin))
+                {
+                    
+                    fscanf(fin,"%d",&j);
+                    fscanf(fin,"%f%f",&e[j],&eme);
+                    m[j]=fabs(eme);
+
+                }
+
+                bloques(e,p.Nmed,Nblock,&med1,&error1,&med2,&error2,1);
+                
+                fprintf(foute,"%f\t", beta);
+                fprintf(foute,"%f\t%f\t%f\t%f\n",med1,error1,med2,error2);
+
+                bloques(m,p.Nmed,Nblock,&med1,&error1,&med2,&error2,2);
+                
+                fprintf(foutm,"%f\t", beta);
+                fprintf(foutm,"%f\t%f\t%f\t%f\n",med1,error1,med2,error2);
+
+                beta += p.dB;
+                fclose(fin);
 
             }
 
-            bloques(e,p.Nmed,Nblock,&med1,&error1,&med2,&error2,1);
-            
-            fprintf(foute,"%f\t", beta);
-            fprintf(foute,"%f\t%f\t%f\t%f\n",med1,error1,med2,error2);
-
-            bloques(m,p.Nmed,Nblock,&med1,&error1,&med2,&error2,2);
-            
-            fprintf(foutm,"%f\t", beta);
-            fprintf(foutm,"%f\t%f\t%f\t%f\n",med1,error1,med2,error2);
-
-            beta += p.dB;
-            fclose(fin);
-
-        }
+            fclose(foute);
+            fclose(foutm);
 
     #endif //SIMULACION
     
+    #ifdef HISTERESIS
+
+        for(hyst=0; hyst<2; hyst++)
+        {
+            sprintf(nameE,"results/hyst/hyste_%d_%d_%d.txt",hyst,Nblock,L);
+            sprintf(nameM,"results/hyst/hystm_%d_%d_%d.txt",hyst,Nblock,L);
+
+            foute = fopen(nameE,"wt");
+            foutm = fopen(nameM,"wt");
+
+            fprintf(foute,"beta\t<e>\terror<e>\tCv\terrorCv\n");
+            fprintf(foutm,"beta\t<m>\terror<m>\tX\terrorX\n");
+
+            for(i=0;i<nFich;i++)
+            {   
+                sprintf(name,"medidas/hyst/hyst%d/med_%d_%d_%.2f.txt",L,hyst,L,beta);
+                fin = fopen(name,"rt");
+                
+                if (fin == NULL) {printf("ERROR leyendo el fichero de beta %f\n",beta); exit(1);}
+                
+                while(!feof(fin))
+                {
+                    
+                    fscanf(fin,"%d",&j);
+                    fscanf(fin,"%f%f",&e[j],&eme);
+                    m[j]=fabs(eme);
+
+                }
+
+                bloques(e,p.Nmed,Nblock,&med1,&error1,&med2,&error2,1);
+                
+                fprintf(foute,"%f\t", beta);
+                fprintf(foute,"%f\t%f\t%f\t%f\n",med1,error1,med2,error2);
+
+                bloques(m,p.Nmed,Nblock,&med1,&error1,&med2,&error2,2);
+                
+                fprintf(foutm,"%f\t", beta);
+                fprintf(foutm,"%f\t%f\t%f\t%f\n",med1,error1,med2,error2);
+
+                beta += p.dB;
+                fclose(fin);
+
+            }
+
+            p.dB = -p.dB;
+            fclose(foute);
+            fclose(foutm);
+        }    
+
+    #endif //HISTERESIS
 
     #ifdef HISTOGRAMAS
 
@@ -133,42 +186,8 @@ int main()
         fclose(histm);
     
     #endif //HISTOGRAMAS
-
-    hyst = 1;
-    j = 0;
-    beta = p.b_0;
-
-    /*
-    for(i=0;i<nFich+1;i++)
-    {   
-
-        sprintf(name,"results/med_%d_%d_%.2f.txt",hyst,L,beta);
-        fin = fopen(name,"rt");
-
-        if (fin == NULL) {printf("ERROR leyendo el fichero de beta %f",beta); exit(1);}
-        
-        while(!feof(fin))
-        {
-            
-            fscanf(fin,"%d",&j);
-            fscanf(fin,"%f%f",&e[j],&m[j]);
-
-        }
-
-        em = mean(e,p.Nmed);
-        mm = fabs(mean(m,p.Nmed));
-        Cvm = Cv(e,p.Nmed);
-        Xm = X(m,p.Nmed);
-        fprintf(fout, "%d\t%f\t%f\t%f\t%f\t%f\n",hyst, beta, em, mm , Cvm, Xm);
-
-        beta += p.dB;
-        fclose(fin);
-
-    }
-    */
     
     printf("\n--------------------FIN--------------------\n\n");
-    fclose(foute);
-    fclose(foutm);
+    
     return 0;
 }

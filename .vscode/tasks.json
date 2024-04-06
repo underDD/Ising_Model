@@ -10,8 +10,8 @@
                 "-O3",
                 "algorithmsDATA.c",
                 "algorithmsNET.c",
-                "main.c",
-                //"calculos.c",
+                //"main.c",
+                "calculos.c",
                 "-o",
                 "ising.exe"
             ],
